@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="hy">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Հարսանեկան Ծրագիր</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        background-color: #f9f9f9;
+        color: #1d1d1d;
+        line-height: 1.6;
+      }
+
+      .wedding-schedule {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+      }
+
+      .header-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      .save-date {
+        margin: 20px 0;
+      }
+
+      .timeline {
+        position: relative;
+        padding: 40px 0;
+      }
+
+      /* Timeline center line */
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .timeline-item {
+        display: flex;
+        margin-bottom: 60px;
+        position: relative;
+        width: 100%;
+      }
+
+      .timeline-item:nth-child(odd) {
+        justify-content: flex-start;
+      }
+
+      .timeline-item:nth-child(even) {
+        justify-content: flex-end;
+      }
+
+      .timeline-content {
+        width: 45%;
+        padding: 25px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        position: relative;
+      }
+
+      .timeline-item:nth-child(odd) .timeline-content {
+        margin-right: auto;
+      }
+
+      .timeline-item:nth-child(even) .timeline-content {
+        margin-left: auto;
+      }
+
+      .time-background {
+        position: absolute;
+        top: -25px;
+        left: 15px;
+        font-size: 80px;
+        font-weight: 300;
+        color: rgba(0, 0, 0, 0.08);
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+      }
+
+      .event-title {
+        font-size: 22px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .event-description {
+        font-size: 15px;
+        line-height: 1.5;
+        font-weight: 300;
+        position: relative;
+        z-index: 2;
+      }
+
+      .map-button {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 12px 25px;
+        background-color: #e8e8e8;
+        color: #1d1d1d;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .map-button:hover {
+        background-color: #d8d8d8;
+        transform: translateY(-2px);
+      }
+
+      .decoration-image {
+        position: absolute;
+        z-index: 1;
+        max-width: 100px;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .timeline::before {
+          left: 30px;
+        }
+
+        .timeline-item {
+          justify-content: flex-start !important;
+          margin-bottom: 40px;
+        }
+
+        .timeline-content {
+          width: calc(100% - 60px);
+          margin-left: 60px !important;
+          margin-right: 0 !important;
+        }
+
+        .time-background {
+          font-size: 60px;
+          top: -15px;
+          left: 10px;
+        }
+
+        .event-title {
+          font-size: 18px;
+        }
+
+        .event-description {
+          font-size: 14px;
+        }
+
+        .header-image {
+          max-width: 80%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .timeline-content {
+          width: calc(100% - 50px);
+          margin-left: 50px !important;
+          padding: 20px;
+        }
+
+        .time-background {
+          font-size: 50px;
+        }
+
+        .event-title {
+          font-size: 16px;
+        }
+
+        .map-button {
+          padding: 10px 20px;
+          font-size: 14px;
+        }
+      }
+
+      /* Animation classes */
+      .fadeinleft {
+        animation: fadeInLeft 1s ease forwards;
+      }
+
+      .fadeinup {
+        animation: fadeInUp 1s ease forwards;
+      }
+
+      .fadeindown {
+        animation: fadeInDown 1s ease forwards;
+      }
+
+      @keyframes fadeInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wedding-schedule">
+      <div class="header">
+        <img
+          src="https://static.tildacdn.one/tild6133-3334-4863-b730-623935643065/rfhnf.svg"
+          alt="Wedding Header"
+          class="header-image"
+        />
+        <div class="save-date">
+          <img
+            src="https://static.tildacdn.one/tild3635-6562-4761-a564-633430393566/save_our_date.svg"
+            alt="Save Our Date"
+          />
+        </div>
+      </div>
+
+      <div class="timeline">
+        <!-- Event 1 -->
+        <div class="timeline-item fadeinleft">
+          <div class="timeline-content">
+            <div class="time-background">10:30</div>
+            <div class="event-title">Հյուրերի դիմավորում</div>
+            <div class="event-description">Մուլտի Գրանդ Փարավոն հյուրանոց</div>
+            <a
+              href="https://yandex.ru/maps/-/CLqmQOIy"
+              target="_blank"
+              class="map-button"
+              >Քարտեզ</a
+            >
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="timeline-item fadeinleft">
+          <div class="timeline-content">
+            <div class="time-background">13:30</div>
+            <div class="event-title">Պսակադրություն</div>
+            <div class="event-description">
+              Սուրբ Հովհաննես Մկրտիչ եկեղեցի (ք. Աբովյան)
+            </div>
+            <a
+              href="https://yandex.ru/maps/-/CLGv5KjL"
+              target="_blank"
+              class="map-button"
+              >Քարտեզ</a
+            >
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="timeline-item fadeinleft">
+          <div class="timeline-content">
+            <div class="time-background">17:30</div>
+            <div class="event-title">Հարսանեկան խնջույք</div>
+            <div class="event-description">«Ոսկե Ծիրան» Պրեմիում հոլ</div>
+            <a
+              href="https://yandex.ru/maps/-/CLGvmPP0"
+              target="_blank"
+              class="map-button"
+              >Քարտեզ</a
+            >
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="timeline-item fadeinleft">
+          <div class="timeline-content">
+            <div class="time-background">23:30</div>
+            <div class="event-title">Հանդիսավարության ավարտ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple animation on scroll
+      document.addEventListener("DOMContentLoaded", function () {
+        const animatedElements = document.querySelectorAll(
+          ".fadeinleft, .fadeinup, .fadeindown"
+        );
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = "running";
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        animatedElements.forEach((el) => {
+          el.style.animationPlayState = "paused";
+          observer.observe(el);
+        });
+      });
+    </script>
+  </body>
+</html>
